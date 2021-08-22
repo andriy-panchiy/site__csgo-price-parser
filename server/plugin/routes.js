@@ -6,9 +6,9 @@ async function routes (fastify, option, done) {
   const sites = fmdb.collection('test_db')
   const settings = fmdb.collection('settings')
 
-  fastify.get('/', async (req, res) => {
-    return { hello: 'world' }
-  })
+  // fastify.get('/', async (req, res) => {
+  //   return { hello: 'world' }
+  // })
 
   // setInterval(() => {
   //   const Bot = new Parser()
