@@ -20,25 +20,30 @@
           </ul>
         </div>
       </div>
+      <div class="alert alert-danger" role="alert" ng-if="settings.alerts.error">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        {{ settings.alerts.error }}
+      </div>
       <table>
         <thead>
           <tr>
-            <th>Skin name</th>
-            <th>Price on <br> Service 1</th>
-            <th>Price on <br> Service 2</th>
-            <th>Difference</th>
-            <th>Status on <br> Service 1</th>
-            <th>Status on <br> Service 2</th>
+            <th ng-click="changeSortType('item_name')">Skin name<span ng-show="isSortType('item_name') " ng-class="{'down' : isOrderedReverse(), 'up': !isOrderedReverse()}"></span></th>
+            <th ng-click="changeSortType('price_0')">Price on <br> Service 1<span ng-show="isSortType('price_0') " ng-class="{'down' : isOrderedReverse(), 'up': !isOrderedReverse()}"></span></th>
+            <th ng-click="changeSortType('price_1')">Price on <br> Service 2<span ng-show="isSortType('price_1') " ng-class="{'down' : isOrderedReverse(), 'up': !isOrderedReverse()}"></span></th>
+            <th ng-click="changeSortType('diff')">Difference<span ng-show="isSortType('diff') " ng-class="{'down' : isOrderedReverse(), 'up': !isOrderedReverse()}"></span></th>
+            <th ng-click="changeSortType('status_0')">Status on <br> Service 1<span ng-show="isSortType('status_0') " ng-class="{'down' : isOrderedReverse(), 'up': !isOrderedReverse()}"></span></th>
+            <th ng-click="changeSortType('status_1')">Status on <br> Service 2<span ng-show="isSortType('status_1') " ng-class="{'down' : isOrderedReverse(), 'up': !isOrderedReverse()}"></span></th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="item in items">
+          <tr ng-repeat="item in items | orderBy: orderType : orderReverse">
             <td>{{ item.item_name }}</td>
+            <td>{{ item.price_0 }}</td>
             <td>{{ item.price_1 }}</td>
-            <td>{{ item.price_2 }}</td>
             <td>{{ item.diff }}</td>
+            <td>{{ item.status_0 }}</td>
             <td>{{ item.status_1 }}</td>
-            <td>{{ item.status_2 }}</td>
           </tr>
         </tbody>
       </table>

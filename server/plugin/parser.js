@@ -10,6 +10,20 @@ class Parser {
 
   async getCookie (url) {
     return await this.cf.request(url).then(res => res.headers)
+  };
+
+  merge (massive) {
+    return massive.reduce(function(acc, item) {
+      let obj = { ...item }
+      Object.keys(obj).forEach(function(item) {
+        if (acc[item]) {
+          Object.assign(acc[item], obj[item]);
+        } else {
+          acc[item] = obj[item];
+        }
+      })
+      return acc;
+    }, {})
   }
 
   async load () {
@@ -17,6 +31,8 @@ class Parser {
     for (const setting of settings) {
       const { site, domain, origin, urls } = setting
       const result = { site }
+
+
 
       for (const urlsKey of Object.keys(urls)) {
         const { method, url, format, settings, actions } = urls[urlsKey]
@@ -101,23 +117,17 @@ class Parser {
         if (domain === 'cs.money') {
           const keys = Object.keys(req)
           if (urlsKey === 'prices') {
-            req = keys.map(v => {
-              const res = {}
-              res[req[v].m] = req[v].a
-              return res
-            })
+            req = this.merge(keys.map(v => {return {[req[v].m]: req[v].a}}))
           } else if (urlsKey === 'overstock' || urlsKey === 'unavailable') {
             req = keys.map(v => req[v].market_hash_name)
           }
         } else if (domain === 'swapskins.com') {
           const keys = Object.keys(req)
           if (urlsKey === 'prices') {
-            req = keys.map(v => {
-              const res = {}
-              res[req[v].name] = req[v].basePrice
-              return res
-            })
+            req = this.merge(keys.map(v => {return {[req[v].name]: req[v].basePrice}}))
           }
+        } else if (domain === 'csgoexo.com') {
+          req = req[0];
         }
 
         result[urlsKey] = JSON.stringify(req)
