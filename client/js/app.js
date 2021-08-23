@@ -114,4 +114,11 @@
     });
   });
 
+  app.filter('range', function () {
+    return function (items, property, min, max) {
+      // console.log(items, property, min, max);
+      return items.filter((item) => item[property] >= min && item[property] <= max)
+    }
+  });
+
 })()
