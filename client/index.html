@@ -7,43 +7,44 @@
     <link rel="stylesheet" href="./css/style.css">
   </head>
   <body>
-    <div ng-app="sortTable" ng-controller="parserController as main" class="container">
+    <div ng-controller="parserController" class="container">
+      <div class="filters">
+        <div class="filter dropdown super-select" ng-repeat="dropdown in options.dropdowns">
+          {{ dropdown.title }}
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            {{ dropdown.options[dropdown.active_index] }}
+            <p><span class="caret"></span></p>
+          </button>
+          <ul class="dropdown-menu super-select-menu">
+            <li ng-repeat="option in dropdown.options" ng-click="setOption(dropdown, option)"><a href="#">{{option}}</a></li>
+          </ul>
+        </div>
+      </div>
       <table>
         <thead>
           <tr>
-            <th>
-              Skin name
-            </th>
-            <th>
-              Price on <br> Service 1
-            </th>
-            <th>
-              Price on <br> Service 2
-            </th>
-            <th>
-              Difference
-            </th>
-            <th>
-              Status on <br> Service 1
-            </th>
-            <th>
-              Status on <br> Service 2
-            </th>
+            <th>Skin name</th>
+            <th>Price on <br> Service 1</th>
+            <th>Price on <br> Service 2</th>
+            <th>Difference</th>
+            <th>Status on <br> Service 1</th>
+            <th>Status on <br> Service 2</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+          <tr ng-repeat="item in items">
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.price_1 }}</td>
+            <td>{{ item.price_2 }}</td>
+            <td>{{ item.diff }}</td>
+            <td>{{ item.status_1 }}</td>
+            <td>{{ item.status_2 }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
     <script src="./js/angular.min.js"></script>
     <script src="./js/app.js"></script>
   </body>
