@@ -9,6 +9,7 @@
   <body>
     <div ng-controller="parserController" class="container">
       <div class="filters">
+        <input id="search" class="form-control" type="text" placeholder="Search item..." ng-model="settings.search">
         <div class="filter dropdown super-select" ng-repeat="dropdown in options.dropdowns">
           {{ dropdown.title }}
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -23,22 +24,28 @@
           <div class="input-group-prepend">
             <span class="input-group-text">Price range on First service</span>
           </div>
-          <input type="number" class="form-control" ng-model="min_price_0" min="0" max="50000" value="0">
-          <input type="number" class="form-control" ng-model="max_price_0" min="0" max="50000" value="10000">
+          <input type="number" class="form-control" ng-model="settings.min_price_0" min="0" max="50000">
+          <input type="number" class="form-control" ng-model="settings.max_price_0" min="0" max="50000">
         </div>
         <div class="filter input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">Price range on Second service</span>
           </div>
-          <input type="number" class="form-control" ng-model="min_price_1" min="0" max="50000" value="0">
-          <input type="number" class="form-control" ng-model="max_price_1" min="0" max="50000" value="10000">
+          <input type="number" class="form-control" ng-model="settings.min_price_1" min="0" max="50000">
+          <input type="number" class="form-control" ng-model="settings.max_price_1" min="0" max="50000">
         </div>
         <div class="filter input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">Difference range</span>
           </div>
-          <input type="number" class="form-control" ng-model="min_diff" min="-100000" max="100000" value="-5000">
-          <input type="number" class="form-control" ng-model="max_diff" min="-100000" max="100000" value="5000">
+          <input type="number" class="form-control" ng-model="settings.min_diff" min="-100000" max="100000">
+          <input type="number" class="form-control" ng-model="settings.max_diff" min="-100000" max="100000">
+        </div>
+        <div class="filter input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Items on page</span>
+          </div>
+          <select ng-model="settings.pageSize" ng-options="item for item in itemsPerPage" id="pageSize" class="form-control"></select>
         </div>
       </div>
       <div class="alert alert-danger" role="alert" ng-if="settings.alerts.error">
@@ -58,7 +65,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="item in items | range : 'price_0' : min_price_0 : max_price_0 | range : 'price_1' : min_price_1 : max_price_1 | range : 'diff' : min_diff : max_diff | orderBy: orderType : orderReverse">
+          <tr ng-repeat="item in items | range : 'price_0' : settings.min_price_0 : settings.max_price_0 | range : 'price_1' : settings.min_price_1 : settings.max_price_1 | range : 'diff' : settings.min_diff : settings.max_diff | orderBy: settings.orderType : settings.orderReverse | filter:settings.search | startFrom:settings.currentPage*settings.pageSize | limitTo:settings.pageSize">
             <td>{{ item.item_name }}</td>
             <td>{{ item.price_0 }}</td>
             <td>{{ item.price_1 }}</td>
@@ -68,6 +75,13 @@
           </tr>
         </tbody>
       </table>
+      <button ng-disabled="settings.currentPage == 0" ng-click="settings.currentPage=settings.currentPage-1">
+        Previous
+      </button>
+      {{settings.currentPage+1}}/{{numberOfPages()}}
+      <button ng-disabled="settings.currentPage >= getData().length/settings.pageSize - 1" ng-click="settings.currentPage=settings.currentPage+1">
+          Next
+      </button>
     </div>
     <script src="./js/jquery-3.6.0.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>

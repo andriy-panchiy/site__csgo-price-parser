@@ -92,12 +92,6 @@ border-top: 5px solid #000;
 /* .filter-table{
 padding-bottom: 30px;
 } */
-.filter-table input{
-width: 100%;
-padding: 15px;
-margin-bottom: 30px;
-}
-
 .filters{
   display:flex;
   flex-wrap: wrap;
@@ -105,6 +99,11 @@ margin-bottom: 30px;
 }
 .filters > *{
   width: 23%;
+  margin-bottom: 15px;
+}
+.filters input{
+  width: 100%;
+  padding: 15px;
 }
 .form-control[type="number"]{
   border-radius: 0;
