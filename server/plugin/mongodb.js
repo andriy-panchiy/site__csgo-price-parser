@@ -1,9 +1,10 @@
 const fastifyPlugin = require('fastify-plugin')
+const api = require('./api.js')
 
 async function dbConnector (fastify, options) {
   console.log(options)
   fastify.register(require('fastify-mongodb'), {
-    url: 'mongodb+srv://admin:sQBSkNKj4Jmu2tbT@cluster0.fntga.mongodb.net/test'
+    url: api.mongodb
   })
 }
 
