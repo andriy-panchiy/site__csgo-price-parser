@@ -41,10 +41,14 @@ class Parser {
         if (method === 'https') {
           req = await fetch(url).then(r => format === 'text' ? r.text() : r.json())
         } else if (method === 'websocket') {
-          const headers = await this.getCookie(origin)
-          headers.Origin = origin
-          headers['User-Agent'] = useragent.getRandom()
-          req = new WebSocket(url, [], { headers })
+          try {
+            const headers = await this.getCookie(origin)
+            headers.Origin = origin
+            headers['User-Agent'] = useragent.getRandom()
+            req = new WebSocket(url, [], { headers })
+          } catch (error) {
+            console.log(error)
+          }
         } else if (method === 'graphql') {
           let { query, variables } = settings
           variables = JSON.parse(variables)

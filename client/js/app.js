@@ -77,7 +77,7 @@
 
         $scope.loadBase = (index) => $http.get(localAddress + '/prices?site=' + $scope.settings.active_sites[index])
 
-        await Promise.all([$scope.loadBase(0), $scope.loadBase(1)]).then(resp => {
+        $scope.items = await Promise.all([$scope.loadBase(0), $scope.loadBase(1)]).then(resp => {
           const respParse = (r, param) => r.data[param] ? JSON.parse(r.data[param]) : null;
           $scope.sites_bases = {
             base_0: {
@@ -121,10 +121,9 @@
               });
             }
           }
-          console.log(items)
-          $scope.items = items;
-        }).catch()
-
+          return items;
+        })
+        $scope.$apply();
         console.log($scope)
       }
       $scope.upload_service();
